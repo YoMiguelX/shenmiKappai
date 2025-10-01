@@ -56,11 +56,14 @@ public String registrarUsuario(@ModelAttribute("usuario") RegistroUsuarioDTO dto
     }
 }
 
-    // ===== LOGIN =====
-    @GetMapping("/login")
-    public String mostrarLogin() {
-        return "login"; // busca templates/login.html
+@GetMapping("/login")
+public String mostrarLogin(HttpSession session) {
+    if (session.getAttribute("usuarioLogueado") != null) {
+        // Si ya hay sesión activa, no mostrar el login otra vez
+        return "redirect:/home";
     }
+    return "login";
+}
 
    @PostMapping("/login")
 public String procesarLogin(
@@ -87,14 +90,12 @@ public String procesarLogin(
 }
 
 
-    // ===== LOGOUT =====
     @GetMapping("/logout")
-    public String logout(HttpSession session) {
-        if (session != null) {
-            session.invalidate();
-        }
-        return "redirect:/login?logout=true";
-    }
+public String logout(HttpSession session) {
+    session.invalidate(); // limpia la sesión
+    return "redirect:/login";
+}
+
 
     // ===== PERFIL DE USUARIO =====
 
