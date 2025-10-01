@@ -2,6 +2,7 @@ package com.example.Shenmi.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -165,5 +166,23 @@ public Usuario guardarUsuario(Usuario usuario) {
         return usuarioDao.save(usuario);
     }
  
+  @Override
+    public Usuario validarLogin(String correo, String contrasena) {
+        Optional<Usuario> opt = usuarioDao.findByCorreoUsuario(correo);
 
+        if (opt.isPresent()) {
+            Usuario usuario = opt.get();
+            // Comparar contraseña encriptada con la ingresada
+            if (passwordEncoder.matches(contrasena, usuario.getContrasena())) {
+                return usuario;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public void save(Usuario usuarioActual) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+ 
 }

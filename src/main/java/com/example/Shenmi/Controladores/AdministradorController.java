@@ -1,9 +1,11 @@
 package com.example.Shenmi.Controladores;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,6 +36,11 @@ public class AdministradorController {
     @Autowired
     private ExcelExportService excelExportService;
 
+    
+@Autowired
+private PasswordEncoder passwordEncoder; // Si no lo tienes ya
+
+
     // ===== LISTAR =====
     @GetMapping("/lista")
     public String listarUsuarios(FiltroDTO filtros, Model model) {
@@ -62,17 +69,22 @@ List<Usuario> usuarios = usuarioService.filtrar(2,
         model.addAttribute("usuario", new Usuario());
         return "admin/crear_admin"; // el HTML en templates/admin/crear_admin.html
     }
-    @PostMapping("/guardar")
-    public String guardarAdmin(@ModelAttribute("usuario") Usuario usuario, RedirectAttributes redirectAttrs) {
-        try {
-            usuario.setRolIdRol(1); // ADMIN
-            usuarioService.guardarUsuario(usuario);
-            redirectAttrs.addFlashAttribute("success", "Administrador registrado correctamente");
-        } catch (Exception e) {
-            redirectAttrs.addFlashAttribute("error", "Error al registrar administrador");
-        }
-        return "redirect:/admin/crear";
+@PostMapping("/guardar")
+public String guardarAdmin(@ModelAttribute("usuario") Usuario usuario, RedirectAttributes redirectAttrs) {
+    try {
+        usuario.setRolIdRol(1); // ADMIN
+
+        // Encriptar contraseña
+        usuario.setContrasena(passwordEncoder.encode(usuario.getContrasena()));
+
+        usuarioService.guardarUsuario(usuario);
+        redirectAttrs.addFlashAttribute("success", "Administrador registrado correctamente");
+    } catch (Exception e) {
+        redirectAttrs.addFlashAttribute("error", "Error al registrar administrador: " + e.getMessage());
     }
+    return "redirect:/admin/crear";
+}
+
 
     @PostMapping("/crear")
     public String crearAdministrador(@ModelAttribute Usuario usuario,
@@ -199,6 +211,107 @@ public String logout(HttpServletRequest request, HttpServletResponse response) {
 
     return "redirect:/login";
 }
+@GetMapping("/cambiar-password")
+public String mostrarCambiarPassword() {
+    return "admin/cambiar-password"; // Nombre de tu template HTML
+}
 
+/**
+ * Procesar cambio de contraseña
+ */
+@PostMapping("/cambiar-password")
+public String cambiarPassword(
+        @RequestParam("passwordActual") String passwordActual,
+        @RequestParam("passwordNueva") String passwordNueva,
+        @RequestParam("passwordConfirmar") String passwordConfirmar,
+        RedirectAttributes redirectAttributes,
+        Principal principal) {
     
+    try {
+        // Obtener el usuario autenticado actual usando Principal
+        String correoUsuario = principal.getName();
+        
+        // Buscar usuario - ajusta el nombre del método según tu servicio
+        Usuario usuarioActual = null;
+        
+        // Prueba estos métodos según lo que tengas en tu UsuarioService:
+        try {
+            usuarioActual = usuarioService.buscarPorCorreo(correoUsuario);
+        } catch (Exception e) {
+            // Si no tienes buscarPorCorreo, prueba con otros nombres comunes:
+            // usuarioActual = usuarioService.findByEmail(correoUsuario);
+            // usuarioActual = usuarioService.obtenerPorCorreo(correoUsuario);
+            // usuarioActual = usuarioService.buscarUsuarioPorCorreo(correoUsuario);
+        }
+        
+        if (usuarioActual == null) {
+            redirectAttributes.addFlashAttribute("error", "Usuario no encontrado");
+            return "redirect:/admin/cambiar-password";
+        }
+        
+        // Verificar que la contraseña actual sea correcta
+        // Ajusta el nombre del getter según tu entidad Usuario:
+        String contrasenaActualBD = usuarioActual.getContrasena(); 
+        // O prueba: getPassword(), getContrasenaUsuario(), etc.
+        
+        if (!passwordEncoder.matches(passwordActual, contrasenaActualBD)) {
+            redirectAttributes.addFlashAttribute("error", "La contraseña actual es incorrecta");
+            return "redirect:/admin/cambiar-password";
+        }
+        
+        // Verificar que las nuevas contraseñas coincidan
+        if (!passwordNueva.equals(passwordConfirmar)) {
+            redirectAttributes.addFlashAttribute("error", "Las nuevas contraseñas no coinciden");
+            return "redirect:/admin/cambiar-password";
+        }
+        
+        // Verificar que la nueva contraseña sea diferente a la actual
+        if (passwordEncoder.matches(passwordNueva, contrasenaActualBD)) {
+            redirectAttributes.addFlashAttribute("error", "La nueva contraseña debe ser diferente a la actual");
+            return "redirect:/admin/cambiar-password";
+        }
+        
+        // Validar fortaleza de la nueva contraseña
+        if (!esPasswordSegura(passwordNueva)) {
+            redirectAttributes.addFlashAttribute("error", 
+                "La contraseña debe tener al menos 8 caracteres, incluir mayúsculas, minúsculas, números y caracteres especiales");
+            return "redirect:/admin/cambiar-password";
+        }
+        
+        // Encriptar y guardar la nueva contraseña
+        // Ajusta el nombre del setter según tu entidad Usuario:
+        usuarioActual.setContrasena(passwordEncoder.encode(passwordNueva));
+        // O prueba: setPassword(), setContrasenaUsuario(), etc.
+        
+        // Guardar - ajusta el nombre del método según tu servicio:
+        usuarioService.save(usuarioActual);
+        // O prueba: guardar(), actualizar(), update(), etc.
+        
+        redirectAttributes.addFlashAttribute("mensaje", "Contraseña cambiada exitosamente");
+        return "redirect:/admin/lista";
+        
+    } catch (Exception e) {
+        redirectAttributes.addFlashAttribute("error", "Error al cambiar la contraseña: " + e.getMessage());
+        return "redirect:/admin/cambiar-password";
+    }
+}
+/**
+     * Validar si una contraseña es segura
+     */
+
+/**
+ * Validar si una contraseña es segura
+ */
+private boolean esPasswordSegura(String password) {
+    if (password == null || password.length() < 8) {
+        return false;
+    }
+    
+    boolean tieneMayuscula = password.matches(".*[A-Z].*");
+    boolean tieneMinuscula = password.matches(".*[a-z].*");
+    boolean tieneNumero = password.matches(".*[0-9].*");
+    boolean tieneEspecial = password.matches(".*[^a-zA-Z0-9].*");
+    
+    return tieneMayuscula && tieneMinuscula && tieneNumero && tieneEspecial;
+}
 }

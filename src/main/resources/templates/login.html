@@ -64,7 +64,10 @@
     </style>
 </head>
 
-<body th:style="'background: url(' + @{/SRC.2/IMG/fondo.jpg} + ') no-repeat center/cover;padding-top:0px'">
+<!-- Restauramos la imagen de fondo del body -->
+<body th:style="'background: url(' + @{/SRC.2/IMG/fondo.jpg} + ') no-repeat center/cover; padding-top: 0px;'">
+
+<!-- Si tienes navbar, úsalo normalmente -->
 <div th:replace="~{plantilla/navbar :: navbar}"></div>
 
 <!-- Mensajes de alerta -->
@@ -78,7 +81,7 @@
 
 <!-- Formulario de login -->
 <div class="login-container">
-    <div class="login-left">
+    <div class="login-left" th:style="'background: url(' + @{/SRC.2/IMG/master-chief-darkmode.jpg} + ') center center/cover no-repeat;'">
         <div class="overlay">
             <h1>¡Bienvenido a Shenmi!</h1>
             <p>Ingresa a las filas del aprendizaje usuario.</p>

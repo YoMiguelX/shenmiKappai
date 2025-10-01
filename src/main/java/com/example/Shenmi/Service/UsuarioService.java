@@ -36,4 +36,10 @@ List<Usuario> filtrar(Integer rol, String nombre, String apellido, String correo
     List<Usuario> obtenerAdministradoresConFiltros(String nombre, String apellido, String correo, String telefono);
 
     List<Usuario> obtenerUsuariosConFiltros(String nombre, String apellido, String correo, String telefono);
+
+    
+Usuario validarLogin(String correo, String contrasena);
+void save(Usuario usuarioActual);
+
+    
 }

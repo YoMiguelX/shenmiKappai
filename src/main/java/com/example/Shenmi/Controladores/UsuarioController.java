@@ -121,7 +121,7 @@ public String procesarLogin(
         }
         return "redirect:/login?logout=true";
     }
-  @GetMapping("/jugador")
+  @GetMapping("/jugador/estado")
 public String estadoJugadores(
         @RequestParam(required = false) String nombreJugador,
         @RequestParam(required = false) String nombreUsuario,
