@@ -1,0 +1,1309 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Perfil de Usuario</title>
+    <link rel="stylesheet" th:href="@{/SRC.2/CSS/login.css}" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+    <body class="bg-gray-100 text-white">
+        <div class="flex min-h-screen">
+            <!-- Menú lateral: muestra avatar, nombre y navegación -->
+            <aside class="w-64 bg-white text-gray-900 p-6 shadow-md">
+                <div class="text-center mb-8">
+                    <!-- Avatar del usuario -->
+                    <img id="avatarSidebar" class="w-20 h-20 mx-auto rounded-full"
+                        src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="avatar">
+                    <p id="nombreSidebar" class="mt-2 font-semibold">Sebastian_CR4</p>
+                    <small id="correoSidebar" class="text-sm text-gray-500" >jsebastianbarrerab@gmail.com</small>
+                </div>
+                <!-- Navegación entre secciones -->
+                <nav>
+                    <h4 class="text-sm font-bold text-gray-600 mb-2">CUENTA</h4>
+                    <ul class="space-y-2 mb-6">
+                        <li onclick="mostrarSeccion('informacion')"
+                            class="cursor-pointer hover:text-blue-600 font-medium" id="item-informacion">Tu información
+                        </li>
+                        <li onclick="mostrarSeccion('seguridad')" class="cursor-pointer hover:text-blue-600 font-medium"
+                            id="item-seguridad">Seguridad</li>
+                    </ul>
+                    <h4 class="text-sm font-bold text-gray-600 mb-2">RED AMIGOS</h4>
+                    <ul class="space-y-2">
+                        <li onclick="mostrarSeccion('perfil')" class="cursor-pointer hover:text-blue-600 font-medium"
+                            id="item-perfil">Perfil</li>
+                        <li onclick="mostrarSeccion('privacidad')"
+                            class="cursor-pointer hover:text-blue-600 font-medium" id="item-privacidad">Configuración de
+                            privacidad</li>
+                        <li onclick="mostrarSeccion('familia')" class="cursor-pointer hover:text-blue-600 font-medium"
+                            id="item-familia">Administración de familia</li>
+                        <li onclick="mostrarSeccion('reporte')" class="cursor-pointer hover:text-blue-600 font-medium"
+                            id="item-reporte">Reportes</li>
+                    </ul>
+                    <!-- Botón para cerrar sesión -->
+                    <button id="btnCerrarSesion" type="button"
+                        class="mt-10 bg-gray-800 hover:bg-gray-900 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300">
+                        Cerrar sesión
+                    </button>
+                </nav>
+            </aside>
+
+            <!-- Contenido principal: cambia según la sección seleccionada -->
+            <main class="flex-1 p-10 bg-gray-900">
+
+                <!-- Sección: Información del usuario -->
+                <section id="informacion" class="seccion visible space-y-6">
+                    <h2 class="text-2xl font-bold text-white mb-6">Tu información</h2>
+                    <div class="space-y-4">
+                        <!-- Campos de información personal -->
+                        <div class="flex justify-between items-center bg-gray-800 p-4 rounded-lg">
+                            <span class="font-medium">Nombre</span>
+                            <span>Johan Barrera</span>
+                            <button class="bg-green-600 hover:bg-green-700 px-4 py-1 rounded">Editar</button>
+                        </div>
+                        <div class="flex justify-between items-center bg-gray-800 p-4 rounded-lg">
+                            <span class="font-medium">Idioma</span>
+                            <span>Español</span>
+                            <button class="bg-green-600 hover:bg-green-700 px-4 py-1 rounded">Editar</button>
+                        </div>
+                        <div class="flex justify-between items-center bg-gray-800 p-4 rounded-lg">
+                            <span class="font-medium">Profesion</span>
+                            <span>Programador de Software</span>
+                            <button class="bg-green-600 hover:bg-green-700 px-4 py-1 rounded">Editar</button>
+                        </div>
+                        <div class="flex justify-between items-center bg-gray-800 p-4 rounded-lg">
+                            <span class="font-medium">Domicilio</span>
+                            <span>-</span>
+                            <button class="bg-green-600 hover:bg-green-700 px-4 py-1 rounded">Editar</button>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-400 mt-4">
+                        Tu nombre, idioma, profesion y domicilio se aplicarán a todas las cuentas de Shenmy que hayas
+                        vinculado.
+                        <a href="#" class="text-green-500 underline">Más información</a>
+                    </p>
+                </section>
+
+                <!-- Seguridad -->
+                <section id="seguridad" class="seccion hidden space-y-6">
+                    <h2 class="text-2xl font-bold text-white">Seguridad</h2>
+
+                    <div class="bg-gray-800 p-6 rounded-lg space-y-4 w-full">
+                        <h3 class="text-white text-lg font-semibold mb-4">Cambiar contraseña</h3>
+
+                        <form id="formCambiarPassword" class="space-y-4">
+                            <div>
+                                <label for="pwdActual" class="block text-sm text-gray-300 mb-1">Contraseña
+                                    actual</label>
+                                <input id="pwdActual" type="password" autocomplete="current-password"
+                                    class="w-full px-3 py-2 rounded bg-gray-700 text-white border border-gray-600" />
+                            </div>
+
+                            <div>
+                                <label for="pwdNueva" class="block text-sm text-gray-300 mb-1">Nueva contraseña</label>
+                                <input id="pwdNueva" type="password" autocomplete="new-password"
+                                    class="w-full px-3 py-2 rounded bg-gray-700 text-white border border-gray-600" />
+                                <p class="text-xs text-gray-400 mt-1">Mínimo 8 caracteres, incluir mayúscula, minúscula
+                                    y número.</p>
+                            </div>
+
+                            <div>
+                                <label for="pwdConfirm" class="block text-sm text-gray-300 mb-1">Confirmar nueva
+                                    contraseña</label>
+                                <input id="pwdConfirm" type="password" autocomplete="new-password"
+                                    class="w-full px-3 py-2 rounded bg-gray-700 text-white border border-gray-600" />
+                            </div>
+
+                            <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">
+                                Guardar contraseña
+                            </button>
+                        </form>
+                    </div>
+                </section>
+
+                <script>
+                    // Helpers: mostrar notificación simple
+                    function mostrarNotifSeg(mensaje, tipo = 'success') {
+                        const el = document.getElementById('notifSeguridad');
+                        el.textContent = mensaje;
+                        el.className = 'mt-4 px-4 py-2 rounded font-medium ' + (tipo === 'success' ? 'bg-green-600 text-white' : 'bg-red-600 text-white');
+                        el.classList.remove('hidden');
+                        setTimeout(() => el.classList.add('hidden'), 3500);
+                    }
+
+                    // Hash SHA-256 -> hex
+                    async function hashPassword(password) {
+                        const enc = new TextEncoder();
+                        const data = enc.encode(password);
+                        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+                        const hashArray = Array.from(new Uint8Array(hashBuffer));
+                        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+                    }
+
+                    function getStoredHash() {
+                        return localStorage.getItem('pwdHash') || null;
+                    }
+
+                    function setStoredHash(hash) {
+                        localStorage.setItem('pwdHash', hash);
+                    }
+
+                    function validarFuerza(pwd) {
+                        if (pwd.length < 8) return false;
+                        if (!/[A-Z]/.test(pwd)) return false;
+                        if (!/[a-z]/.test(pwd)) return false;
+                        if (!/[0-9]/.test(pwd)) return false;
+                        return true;
+                    }
+
+                    document.getElementById('formCambiarPassword').addEventListener('submit', async function (e) {
+                        e.preventDefault();
+                        const actual = document.getElementById('pwdActual').value;
+                        const nueva = document.getElementById('pwdNueva').value;
+                        const confirm = document.getElementById('pwdConfirm').value;
+
+                        // Si no hay contraseña guardada, permitir crear una sin pedir actual
+                        const hashGuardado = getStoredHash();
+                        if (!nueva || !confirm) {
+                            mostrarNotifSeg('Rellene todos los campos.', 'error');
+                            return;
+                        }
+                        if (nueva !== confirm) {
+                            mostrarNotifSeg('La nueva contraseña y la confirmación no coinciden.', 'error');
+                            return;
+                        }
+                        if (!validarFuerza(nueva)) {
+                            mostrarNotifSeg('La contraseña debe tener mínimo 8 caracteres, mayúscula, minúscula y número.', 'error');
+                            return;
+                        }
+
+                        if (hashGuardado) {
+                            if (!actual) {
+                                mostrarNotifSeg('Ingrese la contraseña actual.', 'error');
+                                return;
+                            }
+                            const actualHash = await hashPassword(actual);
+                            if (actualHash !== hashGuardado) {
+                                mostrarNotifSeg('Contraseña actual incorrecta.', 'error');
+                                return;
+                            }
+                        }
+
+                        const nuevaHash = await hashPassword(nueva);
+                        setStoredHash(nuevaHash);
+                        // limpiar campos
+                        document.getElementById('pwdActual').value = '';
+                        document.getElementById('pwdNueva').value = '';
+                        document.getElementById('pwdConfirm').value = '';
+                        mostrarNotifSeg('Contraseña guardada correctamente.', 'success');
+                    });
+
+                    // Opcional: mostrar aviso si no existe contraseña (para indicar que se creará)
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const existe = getStoredHash();
+                        if (!existe) {
+                            mostrarNotifSeg('No hay contraseña establecida. Al guardar se creará una contraseña nueva.', 'success');
+                        }
+                    });
+                </script>
+
+                <!-- Perfil -->
+                <section id="perfil" class="seccion hidden space-y-6">
+                    <h2 class="text-2xl font-bold text-white">Perfil</h2>
+
+                    <!-- Estado en línea -->
+                    <div class="flex items-center justify-between bg-gray-800 p-4 rounded-lg">
+                        <span class="text-gray-200 font-medium">Estado</span>
+                        <span class="text-green-400 font-semibold">En línea</span>
+                    </div>
+
+
+
+                    <!-- Foto de perfil -->
+                    <div class="bg-gray-800 p-4 rounded-lg space-y-4">
+                        <h3 class="text-white font-semibold">Foto de perfil</h3>
+                        <div class="flex items-center gap-4">
+                            <!-- Vista previa -->
+                            <img id="previewAvatar" src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
+                                alt="Avatar" class="w-20 h-20 rounded-full border-4 border-gray-700 object-cover" />
+
+                            <!-- Entrada de archivo -->
+                            <div>
+                                <label class="block text-sm text-gray-300 mb-1">Actualizar imagen:</label>
+                                <input type="file" id="inputAvatar" accept="image/*"
+                                    class="block w-full text-sm text-gray-300 bg-gray-700 border border-gray-600 rounded cursor-pointer focus:outline-none"
+                                    onclick="mostrarGaleria()">
+                            </div>
+                        </div>
+
+                        <!-- Galería de avatares -->
+                        <div id="galeriaAvatares" class="mt-4 hidden">
+                            <p class="text-sm text-gray-300 mb-2">O elige un avatar predeterminado:</p>
+                            <div class="grid grid-cols-6 gap-3">
+                                <!-- 24 avatares -->
+                                <img src="SRC.2/IMG/avatars/avatar1.png"
+                                    onclick="seleccionarAvatar('SRC.2/IMG/avatars/avatar1.png')"
+                                    class="w-14 h-14 rounded-full border-2 border-transparent hover:border-green-500 cursor-pointer transition-transform hover:scale-105" />
+                                <img src="SRC.2/IMG/avatars/avatar2.png"
+                                    onclick="seleccionarAvatar('SRC.2/IMG/avatars/avatar2.png')"
+                                    class="w-14 h-14 rounded-full border-2 border-transparent hover:border-green-500 cursor-pointer transition-transform hover:scale-105" />
+                                <img src="SRC.2/IMG/avatars/avatar3.png"
+                                    onclick="seleccionarAvatar('SRC.2/IMG/avatars/avatar3.png')"
+                                    class="w-14 h-14 rounded-full border-2 border-transparent hover:border-green-500 cursor-pointer transition-transform hover:scale-105" />
+                                <img src="SRC.2/IMG/avatars/avatar4.png"
+                                    onclick="seleccionarAvatar('SRC.2/IMG/avatars/avatar4.png')"
+                                    class="w-14 h-14 rounded-full border-2 border-transparent hover:border-green-500 cursor-pointer transition-transform hover:scale-105" />
+                                <img src="SRC.2/IMG/avatars/avatar5.png"
+                                    onclick="seleccionarAvatar('SRC.2/IMG/avatars/avatar5.png')"
+                                    class="w-14 h-14 rounded-full border-2 border-transparent hover:border-green-500 cursor-pointer transition-transform hover:scale-105" />
+                                <img src="SRC.2/IMG/avatars/avatar6.png"
+                                    onclick="seleccionarAvatar('SRC.2/IMG/avatars/avatar6.png')"
+                                    class="w-14 h-14 rounded-full border-2 border-transparent hover:border-green-500 cursor-pointer transition-transform hover:scale-105" />
+                                <img src="SRC.2/IMG/avatars/avatar7.png"
+                                    onclick="seleccionarAvatar('SRC.2/IMG/avatars/avatar7.png')"
+                                    class="w-14 h-14 rounded-full border-2 border-transparent hover:border-green-500 cursor-pointer transition-transform hover:scale-105" />
+                                <img src="SRC.2/IMG/avatars/avatar8.png"
+                                    onclick="seleccionarAvatar('SRC.2/IMG/avatars/avatar8.png')"
+                                    class="w-14 h-14 rounded-full border-2 border-transparent hover:border-green-500 cursor-pointer transition-transform hover:scale-105" />
+                                <img src="SRC.2/IMG/avatars/avatar9.png"
+                                    onclick="seleccionarAvatar('SRC.2/IMG/avatars/avatar9.png')"
+                                    class="w-14 h-14 rounded-full border-2 border-transparent hover:border-green-500 cursor-pointer transition-transform hover:scale-105" />
+                                <img src="SRC.2/IMG/avatars/avatar10.png"
+                                    onclick="seleccionarAvatar('SRC.2/IMG/avatars/avatar10.png')"
+                                    class="w-14 h-14 rounded-full border-2 border-transparent hover:border-green-500 cursor-pointer transition-transform hover:scale-105" />
+                                <img src="SRC.2/IMG/avatars/avatar12.png"
+                                    onclick="seleccionarAvatar('SRC.2/IMG/avatars/avatar12.png')"
+                                    class="w-14 h-14 rounded-full border-2 border-transparent hover:border-green-500 cursor-pointer transition-transform hover:scale-105" />
+                                <img src="SRC.2/IMG/avatars/avatar13.png"
+                                    onclick="seleccionarAvatar('SRC.2/IMG/avatars/avatar13.png')"
+                                    class="w-14 h-14 rounded-full border-2 border-transparent hover:border-green-500 cursor-pointer transition-transform hover:scale-105" />
+                                <img src="SRC.2/IMG/avatars/avatar14.png"
+                                    onclick="seleccionarAvatar('SRC.2/IMG/avatars/avatar14.png')"
+                                    class="w-14 h-14 rounded-full border-2 border-transparent hover:border-green-500 cursor-pointer transition-transform hover:scale-105" />
+                                <img src="SRC.2/IMG/avatars/avatar15.png"
+                                    onclick="seleccionarAvatar('SRC.2/IMG/avatars/avatar15.png')"
+                                    class="w-14 h-14 rounded-full border-2 border-transparent hover:border-green-500 cursor-pointer transition-transform hover:scale-105" />
+                                <img src="SRC.2/IMG/avatars/avatar16.png"
+                                    onclick="seleccionarAvatar('SRC.2/IMG/avatars/avatar16.png')"
+                                    class="w-14 h-14 rounded-full border-2 border-transparent hover:border-green-500 cursor-pointer transition-transform hover:scale-105" />
+                                <img src="SRC.2/IMG/avatars/avatar17.png"
+                                    onclick="seleccionarAvatar('SRC.2/IMG/avatars/avatar17.png')"
+                                    class="w-14 h-14 rounded-full border-2 border-transparent hover:border-green-500 cursor-pointer transition-transform hover:scale-105" />
+                                <img src="SRC.2/IMG/avatars/avatar18.png"
+                                    onclick="seleccionarAvatar('SRC.2/IMG/avatars/avatar18.png')"
+                                    class="w-14 h-14 rounded-full border-2 border-transparent hover:border-green-500 cursor-pointer transition-transform hover:scale-105" />
+                                <img src="SRC.2/IMG/avatars/avatar19.png"
+                                    onclick="seleccionarAvatar('SRC.2/IMG/avatars/avatar19.png')"
+                                    class="w-14 h-14 rounded-full border-2 border-transparent hover:border-green-500 cursor-pointer transition-transform hover:scale-105" />
+                                <img src="SRC.2/IMG/avatars/avatar20.png"
+                                    onclick="seleccionarAvatar('SRC.2/IMG/avatars/avatar20.png')"
+                                    class="w-14 h-14 rounded-full border-2 border-transparent hover:border-green-500 cursor-pointer transition-transform hover:scale-105" />
+                                <img src="SRC.2/IMG/avatars/avatar21.png"
+                                    onclick="seleccionarAvatar('SRC.2/IMG/avatars/avatar21.png')"
+                                    class="w-14 h-14 rounded-full border-2 border-transparent hover:border-green-500 cursor-pointer transition-transform hover:scale-105" />
+                                <img src="SRC.2/IMG/avatars/avatar22.png"
+                                    onclick="seleccionarAvatar('SRC.2/IMG/avatars/avatar22.png')"
+                                    class="w-14 h-14 rounded-full border-2 border-transparent hover:border-green-500 cursor-pointer transition-transform hover:scale-105" />
+                                <img src="SRC.2/IMG/avatars/avatar25.png"
+                                    onclick="seleccionarAvatar('SRC.2/IMG/avatars/avatar25.png')"
+                                    class="w-14 h-14 rounded-full border-2 border-transparent hover:border-green-500 cursor-pointer transition-transform hover:scale-105" />
+                                <img src="SRC.2/IMG/avatars/avatar24.png"
+                                    onclick="seleccionarAvatar('SRC.2/IMG/avatars/avatar24.png')"
+                                    class="w-14 h-14 rounded-full border-2 border-transparent hover:border-green-500 cursor-pointer transition-transform hover:scale-105" />
+                                <!-- Los nombres deben coincidir con los archivos reales en /avatars/ -->
+                                <!-- Puedes usar un script backend o generar el HTML desde JS si prefieres automatizarlo -->
+
+                                <!-- Aquí ponemos los 24 manualmente -->
+                                <!-- Del avatar1.png al avatar24.png -->
+
+                                <script>
+                                    const input = document.getElementById("inputAvatar");
+                                    const galeria = document.getElementById("galeriaAvatares");
+
+                                    // 🔁 IDs de todos los lugares donde se mostrará el avatar
+                                    const avatarIds = ["previewAvatar", "avatarSidebar", "avatarDashboard"];
+
+                                    // ✅ Función para actualizar todos los avatares en pantalla
+                                    function actualizarAvatares(src) {
+                                        avatarIds.forEach(id => {
+                                            const img = document.getElementById(id);
+                                            if (img) img.src = src;
+                                        });
+
+                                        // También si hay varios avatares con la misma clase
+                                        const multiple = document.querySelectorAll(".avatar-usuario");
+                                        multiple.forEach(img => img.src = src);
+                                    }
+
+                                    // ✅ Cargar el avatar guardado al iniciar
+                                    window.addEventListener("DOMContentLoaded", () => {
+                                        const guardado = localStorage.getItem("avatarSeleccionado");
+                                        if (guardado) {
+                                            actualizarAvatares(guardado);
+                                        }
+                                    });
+
+                                    // ✅ Cuando el usuario sube su propia imagen
+                                    input?.addEventListener("change", function () {
+                                        const file = input.files[0];
+                                        if (file) {
+                                            const reader = new FileReader();
+                                            reader.onload = function (e) {
+                                                const dataURL = e.target.result;
+                                                localStorage.setItem("avatarSeleccionado", dataURL);
+                                                actualizarAvatares(dataURL);
+                                            };
+                                            reader.readAsDataURL(file);
+                                        }
+                                    });
+
+                                    // ✅ Cuando elige un avatar predeterminado
+                                    function seleccionarAvatar(ruta) {
+                                        localStorage.setItem("avatarSeleccionado", ruta);
+                                        actualizarAvatares(ruta);
+                                    }
+
+                                    // ✅ Mostrar galería al hacer clic en input
+                                    function mostrarGaleria() {
+                                        galeria?.classList.remove("hidden");
+                                    }
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Nombre público -->
+                    <div class="bg-gray-800 p-4 rounded-lg space-y-2">
+                        <label for="nombreUsuario" class="block text-sm text-gray-300 font-medium">Nombre de
+                            usuario</label>
+                        <input type="text" id="nombreUsuario" value="Sebastian_CR4"
+                            class="w-full px-3 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring focus:border-blue-400">
+                        <button class="mt-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">Guardar
+                            cambios</button>
+                    </div>
+
+                    <!-- Descripción breve -->
+                    <div class="bg-gray-800 p-4 rounded-lg space-y-2">
+                        <label for="bio" class="block text-sm text-gray-300 font-medium">Biografía</label>
+                        <textarea id="bio" rows="3"
+                            class="w-full px-3 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring focus:border-blue-400">Soy estudiante del Sena y me esfuerzo por lograr mis trabajos con responsabilidad...</textarea>
+                        <button class="mt-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">Actualizar
+                            biografía</button>
+                    </div>
+
+                    <script>
+                        // =====================================================================
+                        // FUNCIÓN PARA GUARDAR EL NOMBRE DE USUARIO
+                        // =====================================================================
+                        function guardarNombreUsuario() {
+                            // 1. Obtener el valor del input
+                            const nombre = document.getElementById('nombreUsuario').value;
+
+                            // 2. Validar (ejemplo: que no esté vacío)
+                            if (!nombre.trim()) {
+                                alert("⚠️ El nombre de usuario no puede estar vacío.");
+                                return;
+                            }
+
+                            // 3. Guardar en localStorage (simulación de guardar en servidor)
+                            localStorage.setItem("nombreUsuario", nombre);
+
+                               // 🔥 ACTUALIZAR TAMBIÉN EL MENÚ LATERAL
+                            const nombreSidebar = document.getElementById("nombreSidebar");
+                            if (nombreSidebar) {
+                                nombreSidebar.textContent = nombre;
+                            }
+
+                            // 4. Mostrar confirmación
+                            alert("✅ Nombre de usuario guardado correctamente.");
+                        }
+
+                        // =====================================================================
+                        // FUNCIÓN PARA ACTUALIZAR LA BIOGRAFÍA
+                        // =====================================================================
+                        function actualizarBiografia() {
+                            // 1. Obtener el valor del textarea
+                            const bio = document.getElementById('bio').value;
+
+                            // 2. Validar (ejemplo: que tenga al menos 10 caracteres)
+                            if (bio.trim().length < 10) {
+                                alert("⚠️ La biografía debe tener al menos 10 caracteres.");
+                                return;
+                            }
+
+                            // 3. Guardar en localStorage (simulación de guardar en servidor)
+                            localStorage.setItem("biografia", bio);
+
+                            // 4. Mostrar confirmación
+                            alert("✅ Biografía actualizada correctamente.");
+                        }
+
+                        // =====================================================================
+                        // FUNCIÓN PARA CARGAR DATOS AL INICIAR LA PÁGINA
+                        // =====================================================================
+                        function cargarPerfil() {
+                            // Si existe un nombre guardado, mostrarlo
+                            const nombreGuardado = localStorage.getItem("nombreUsuario");
+                            if (nombreGuardado) {
+                                document.getElementById('nombreUsuario').value = nombreGuardado;
+                             document.getElementById('nombreSidebar').textContent = nombreGuardado;
+}
+
+                            // Si existe una biografía guardada, mostrarla
+                            const bioGuardada = localStorage.getItem("biografia");
+                            if (bioGuardada) {
+                                document.getElementById('bio').value = bioGuardada;
+                            }
+
+                            // 🔥 Correo
+                            const correoGuardado = localStorage.getItem("correoUsuario");
+                            if (correoGuardado) {
+                                document.getElementById('correoSidebar').textContent = correoGuardado;
+                            }
+                        }
+
+                        // =====================================================================
+                        // ENLACE DE FUNCIONES A BOTONES
+                        // =====================================================================
+                        document.addEventListener("DOMContentLoaded", function () {
+                            // Cargar los datos cuando se abre la página
+                            cargarPerfil();
+
+                            // Asociar la función de guardar nombre al primer botón
+                            const btnGuardarNombre = document.querySelector(
+                                "#nombreUsuario + button"
+                            );
+                            btnGuardarNombre.addEventListener("click", guardarNombreUsuario);
+
+                            // Asociar la función de actualizar bio al segundo botón
+                            const btnActualizarBio = document.querySelector(
+                                "#bio + button"
+                            );
+                            btnActualizarBio.addEventListener("click", actualizarBiografia);
+                        });
+                    </script>
+
+                </section>
+
+                <!-- Privacidad -->
+                <section id="privacidad" class="seccion hidden">
+                    <h2 class="text-2xl font-bold mb-4">Configuración de privacidad</h2>
+                    <div class="mt-4 space-y-4">
+                        <div class="bg-gray-800 p-6 rounded-lg mt-6">
+                            <h3 class="text-white text-lg font-semibold mb-4">Privacidad</h3>
+                            <form>
+                                <div class="space-y-4">
+                                    <div class="space-y-2">
+                                        <label class="flex items-center gap-2">
+                                            <input type="radio" name="privacidad" value="coming-soon" />
+                                            <span>Solo Amigos</span>
+                                        </label>
+                                        <p class="text-sm text-gray-400 ml-6">Tu sitio se comparte a tu familia.</p>
+                                        <label class="flex items-center gap-2 mt-2">
+                                            <input type="radio" name="privacidad" value="publico" checked />
+                                            <span>Público</span>
+                                        </label>
+                                        <p class="text-sm text-gray-400 ml-6">Tu sitio es visible para todos.</p>
+
+                                        <label class="flex items-center gap-2 mt-2">
+                                            <input type="radio" name="privacidad" value="privado" />
+                                            <span>Privado</span>
+                                        </label>
+                                        <p class="text-sm text-gray-400 ml-6">Tu sitio solo es visible para ti. Todos
+                                            los
+                                            demás verán una pantalla de inicio de sesión.</p>
+                                    </div>
+                                </div>
+
+                                <div class="mt-6 bg-gray-700 p-4 rounded-lg">
+                                    <h4 class="text-white font-semibold mb-2">Exportar datos personales</h4>
+                                    <p class="text-xs text-gray-300 mb-2">
+                                        Descarga tus datos personales en formato Excel para revisarlos o guardarlos.
+                                    </p>
+                                    <button type="button"
+                                        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded w-full"
+                                        onclick="exportarDatosExcel()">
+                                        Descargar datos en Excel
+                                    </button>
+                                </div>
+                                <button type="submit"
+                                    class="mt-6 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">Guardar
+                                    configuración</button>
+
+                        </div>
+                        <div id="avisoCookies"
+                            class="fixed bottom-0 left-0 w-full bg-black text-white p-6 z-50 flex flex-col md:flex-row items-center justify-between shadow-lg"
+                            style="display:none;">
+                            <div class="mb-4 md:mb-0 md:w-2/3">
+                                <h4 class="font-bold mb-2">Este sitio web utiliza cookies</h4>
+                                <p class="text-sm mb-2">
+                                    Usamos cookies para personalizar contenido y anuncios, ofrecer funciones de redes
+                                    sociales y analizar nuestro
+                                    tráfico. Compartimos información sobre el uso de nuestro sitio con nuestros socios
+                                    de redes sociales, publicidad y
+                                    análisis.
+                                </p>
+                                <div class="flex gap-4 text-xs">
+                                    <label><input type="checkbox" id="cookieNecesarias" checked disabled class="mr-1">
+                                        Necesarias</label>
+                                    <label><input type="checkbox" id="cookiePreferencias" class="mr-1">
+                                        Preferencias</label>
+                                    <label><input type="checkbox" id="cookieEstadisticas" class="mr-1">
+                                        Estadísticas</label>
+                                    <label><input type="checkbox" id="cookieMarketing" class="mr-1"> Marketing</label>
+                                </div>
+                            </div>
+                            <div class="flex flex-col gap-2 md:w-1/3">
+                                <button onclick="aceptarTodasCookies()"
+                                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded font-bold">Permitir
+                                    todas las cookies</button>
+                                <button onclick="aceptarSeleccionCookies()"
+                                    class="border border-blue-600 text-blue-600 px-4 py-2 rounded font-bold">Permitir
+                                    selección</button>
+                                <button onclick="aceptarSoloNecesarias()"
+                                    class="border border-blue-600 text-blue-600 px-4 py-2 rounded font-bold">Usar solo
+                                    cookies necesarias</button>
+                            </div>
+                        </div>
+                        </form>
+                </section>
+
+                <!-- Familia -->
+                <section id="familia" class="seccion hidden space-y-6">
+                    <h2 class="text-2xl font-bold text-white">Administración de familia</h2>
+
+                    <!-- Formulario para agregar miembro -->
+                    <div class="bg-gray-800 p-6 rounded-lg">
+                        <h3 class="text-white text-lg font-semibold mb-4">Añadir nuevo miembro</h3>
+
+                        <form id="formAgregarMiembro" class="space-y-4">
+                            <div>
+                                <label class="block text-sm text-gray-300 mb-1" for="correoMiembro">Correo
+                                    electrónico</label>
+                                <input type="email" id="correoMiembro"
+                                    class="w-full px-3 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring focus:border-blue-400"
+                                    placeholder="ejemplo@correo.com" required>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm text-gray-300 mb-1" for="rolMiembro">Rol del miembro</label>
+                                <select id="rolMiembro"
+                                    class="w-full px-3 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring focus:border-blue-400"
+                                    required>
+                                    <option value="">Seleccione un rol</option>
+                                    <option value="Escudero">Escudero</option>
+                                    <option value="Armero">Armero</option>
+                                    <option value="Ayudante de caballeria">Ayudante de caballeria</option>
+                                    <option value="paje">paje</option>
+                                </select>
+                            </div>
+                            <button type="submit"
+                                class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded mt-2 w-full">
+                                Agregar miembro
+                            </button>
+                        </form>
+                    </div>
+                    <!-- Lista de miembros -->
+                    <div class="bg-gray-800 p-6 rounded-lg">
+                        <h3 class="text-white text-lg font-semibold mb-4">Miembros de la familia</h3>
+                        <input type="text" id="busquedaMiembro" placeholder="Buscar por correo o rol..."
+                            class="w-full px-3 py-2 mb-4 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring focus:border-blue-400" />
+                        <ul id="listaMiembros" class="space-y-4">
+                            <!-- Aquí se agregarán los miembros dinámicamente -->
+                        </ul>
+                    </div>
+
+                </section>
+
+
+                <!-- Sección del reporte -->
+                <section id="reporte"
+                    class="seccion hidden bg-cover bg-center py-10 px-4 flex items-center justify-center min-h-screen"
+                    style="background-image: url('SRC.2/IMG/mario.jpg');">
+
+                    <!-- Contenedor del cuestionario -->
+                    <div
+                        class="w-full max-w-3xl bg-black/80 border border-black rounded-2xl shadow-xl p-8 backdrop-blur-sm">
+                        <h1 class="text-3xl font-extrabold text-center text-black-700 mb-6">Cuestionario de Opinión</h1>
+                        <form id="formularioCuestionario" class="space-y-6">
+
+                            <!-- Contenedor de preguntas -->
+                            <div id="preguntas">
+
+                                <!-- Ejemplo de pregunta con estrella y respuestas con Pac-Man -->
+                                <div class="pregunta">
+                                    <p class="font-bold mb-2 flex items-center gap-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-500"
+                                            fill="currentColor" viewBox="0 0 20 20">
+                                            <path
+                                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.562 4.808h5.058c.969 0 1.371 1.24.588 1.81l-4.1 2.988 1.563 4.808c.3.921-.755 1.688-1.538 1.117L10 15.347l-4.083 2.11c-.783.571-1.838-.196-1.538-1.117l1.563-4.808-4.1-2.988c-.783-.57-.38-1.81.588-1.81h5.058l1.561-4.808z" />
+                                        </svg>
+                                        1. ¿Qué te pareció el diseño del juego?
+                                    </p>
+                                    <div class="space-y-2 ml-6">
+                                        <label class="block">
+                                            <input type="radio" name="p1" value="A" class="mr-2" />
+                                            <span class="inline-flex items-center gap-2 text-green-600 font-semibold">
+                                                <span class="pacman text-xl">👾</span> A) Muy bueno
+                                            </span>
+                                        </label>
+                                        <label class="block">
+                                            <input type="radio" name="p1" value="B" class="mr-2" />
+                                            <span class="inline-flex items-center gap-2 text-yellow-500 font-semibold">
+                                                <span class="pacman text-xl">👾</span> B) Normal
+                                            </span>
+                                        </label>
+                                        <label class="block">
+                                            <input type="radio" name="p1" value="C" class="mr-2" />
+                                            <span class="inline-flex items-center gap-2 text-red-600 font-semibold">
+                                                <span class="pacman text-xl">👾</span> C) Muy malo
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="pregunta hidden">
+                                    <p class="font-bold mb-2 flex items-center gap-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-500"
+                                            fill="currentColor" viewBox="0 0 20 20">
+                                            <path
+                                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.562 4.808h5.058c.969 0 1.371 1.24.588 1.81l-4.1 2.988 1.563 4.808c.3.921-.755 1.688-1.538 1.117L10 15.347l-4.083 2.11c-.783.571-1.838-.196-1.538-1.117l1.563-4.808-4.1-2.988c-.783-.57-.38-1.81.588-1.81h5.058l1.561-4.808z" />
+                                        </svg>
+                                        2. ¿El juego fue facil de entender?
+                                    </p>
+                                    <div class="space-y-2 ml-6">
+                                        <label class="block">
+                                            <input type="radio" name="p1" value="A" class="mr-2" />
+                                            <span class="inline-flex items-center gap-2 text-green-600 font-semibold">
+                                                <span class="pacman text-xl">👾</span> A) Muy bueno
+                                            </span>
+                                        </label>
+                                        <label class="block">
+                                            <input type="radio" name="p1" value="B" class="mr-2" />
+                                            <span class="inline-flex items-center gap-2 text-yellow-500 font-semibold">
+                                                <span class="pacman text-xl">👾</span> B) Normal
+                                            </span>
+                                        </label>
+                                        <label class="block">
+                                            <input type="radio" name="p1" value="C" class="mr-2" />
+                                            <span class="inline-flex items-center gap-2 text-red-600 font-semibold">
+                                                <span class="pacman text-xl">👾</span> C) Muy malo
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="pregunta hidden">
+                                    <p class="font-bold mb-2 flex items-center gap-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-500"
+                                            fill="currentColor" viewBox="0 0 20 20">
+                                            <path
+                                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.562 4.808h5.058c.969 0 1.371 1.24.588 1.81l-4.1 2.988 1.563 4.808c.3.921-.755 1.688-1.538 1.117L10 15.347l-4.083 2.11c-.783.571-1.838-.196-1.538-1.117l1.563-4.808-4.1-2.988c-.783-.57-.38-1.81.588-1.81h5.058l1.561-4.808z" />
+                                        </svg>
+                                        3. ¿Que tan entretenido fue el juego?
+                                    </p>
+                                    <div class="space-y-2 ml-6">
+                                        <label class="block">
+                                            <input type="radio" name="p1" value="A" class="mr-2" />
+                                            <span class="inline-flex items-center gap-2 text-green-600 font-semibold">
+                                                <span class="pacman text-xl">👾</span> A) Muy bueno
+                                            </span>
+                                        </label>
+                                        <label class="block">
+                                            <input type="radio" name="p1" value="B" class="mr-2" />
+                                            <span class="inline-flex items-center gap-2 text-yellow-500 font-semibold">
+                                                <span class="pacman text-xl">👾</span> B) Normal
+                                            </span>
+                                        </label>
+                                        <label class="block">
+                                            <input type="radio" name="p1" value="C" class="mr-2" />
+                                            <span class="inline-flex items-center gap-2 text-red-600 font-semibold">
+                                                <span class="pacman text-xl">👾</span> C) Muy malo
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="pregunta hidden">
+                                    <p class="font-bold mb-2 flex items-center gap-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-500"
+                                            fill="currentColor" viewBox="0 0 20 20">
+                                            <path
+                                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.562 4.808h5.058c.969 0 1.371 1.24.588 1.81l-4.1 2.988 1.563 4.808c.3.921-.755 1.688-1.538 1.117L10 15.347l-4.083 2.11c-.783.571-1.838-.196-1.538-1.117l1.563-4.808-4.1-2.988c-.783-.57-.38-1.81.588-1.81h5.058l1.561-4.808z" />
+                                        </svg>
+                                        4. ¿Que tan util fue la inferfaz para aprender?
+                                    </p>
+                                    <div class="space-y-2 ml-6">
+                                        <label class="block">
+                                            <input type="radio" name="p1" value="A" class="mr-2" />
+                                            <span class="inline-flex items-center gap-2 text-green-600 font-semibold">
+                                                <span class="pacman text-xl">👾</span> A) Muy bueno
+                                            </span>
+                                        </label>
+                                        <label class="block">
+                                            <input type="radio" name="p1" value="B" class="mr-2" />
+                                            <span class="inline-flex items-center gap-2 text-yellow-500 font-semibold">
+                                                <span class="pacman text-xl">👾</span> B) Normal
+                                            </span>
+                                        </label>
+                                        <label class="block">
+                                            <input type="radio" name="p1" value="C" class="mr-2" />
+                                            <span class="inline-flex items-center gap-2 text-red-600 font-semibold">
+                                                <span class="pacman text-xl">👾</span> C) Muy malo
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="pregunta hidden">
+                                    <p class="font-bold mb-2 flex items-center gap-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-500"
+                                            fill="currentColor" viewBox="0 0 20 20">
+                                            <path
+                                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.562 4.808h5.058c.969 0 1.371 1.24.588 1.81l-4.1 2.988 1.563 4.808c.3.921-.755 1.688-1.538 1.117L10 15.347l-4.083 2.11c-.783.571-1.838-.196-1.538-1.117l1.563-4.808-4.1-2.988c-.783-.57-.38-1.81.588-1.81h5.058l1.561-4.808z" />
+                                        </svg>
+                                        5. ¿Te sentiste motivado a participar?
+                                    </p>
+                                    <div class="space-y-2 ml-6">
+                                        <label class="block">
+                                            <input type="radio" name="p1" value="A" class="mr-2" />
+                                            <span class="inline-flex items-center gap-2 text-green-600 font-semibold">
+                                                <span class="pacman text-xl">👾</span> A) Muy bueno
+                                            </span>
+                                        </label>
+                                        <label class="block">
+                                            <input type="radio" name="p1" value="B" class="mr-2" />
+                                            <span class="inline-flex items-center gap-2 text-yellow-500 font-semibold">
+                                                <span class="pacman text-xl">👾</span> B) Normal
+                                            </span>
+                                        </label>
+                                        <label class="block">
+                                            <input type="radio" name="p1" value="C" class="mr-2" />
+                                            <span class="inline-flex items-center gap-2 text-red-600 font-semibold">
+                                                <span class="pacman text-xl">👾</span> C) Muy malo
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="pregunta hidden">
+                                    <p class="font-bold mb-2 flex items-center gap-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-500"
+                                            fill="currentColor" viewBox="0 0 20 20">
+                                            <path
+                                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.562 4.808h5.058c.969 0 1.371 1.24.588 1.81l-4.1 2.988 1.563 4.808c.3.921-.755 1.688-1.538 1.117L10 15.347l-4.083 2.11c-.783.571-1.838-.196-1.538-1.117l1.563-4.808-4.1-2.988c-.783-.57-.38-1.81.588-1.81h5.058l1.561-4.808z" />
+                                        </svg>
+                                        6. ¿Recomendarias este sistema a otros?
+                                    </p>
+                                    <div class="space-y-2 ml-6">
+                                        <label class="block">
+                                            <input type="radio" name="p1" value="A" class="mr-2" />
+                                            <span class="inline-flex items-center gap-2 text-green-600 font-semibold">
+                                                <span class="pacman text-xl">👾</span> A) Muy bueno
+                                            </span>
+                                        </label>
+                                        <label class="block">
+                                            <input type="radio" name="p1" value="B" class="mr-2" />
+                                            <span class="inline-flex items-center gap-2 text-yellow-500 font-semibold">
+                                                <span class="pacman text-xl">👾</span> B) Normal
+                                            </span>
+                                        </label>
+                                        <label class="block">
+                                            <input type="radio" name="p1" value="C" class="mr-2" />
+                                            <span class="inline-flex items-center gap-2 text-red-600 font-semibold">
+                                                <span class="pacman text-xl">👾</span> C) Muy malo
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="pregunta hidden">
+                                    <p class="font-bold mb-2 flex items-center gap-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-500"
+                                            fill="currentColor" viewBox="0 0 20 20">
+                                            <path
+                                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.562 4.808h5.058c.969 0 1.371 1.24.588 1.81l-4.1 2.988 1.563 4.808c.3.921-.755 1.688-1.538 1.117L10 15.347l-4.083 2.11c-.783.571-1.838-.196-1.538-1.117l1.563-4.808-4.1-2.988c-.783-.57-.38-1.81.588-1.81h5.058l1.561-4.808z" />
+                                        </svg>
+                                        7. ¿Que opina de la dificultad del juego?
+                                    </p>
+                                    <div class="space-y-2 ml-6">
+                                        <label class="block">
+                                            <input type="radio" name="p1" value="A" class="mr-2" />
+                                            <span class="inline-flex items-center gap-2 text-green-600 font-semibold">
+                                                <span class="pacman text-xl">👾</span> A) Muy bueno
+                                            </span>
+                                        </label>
+                                        <label class="block">
+                                            <input type="radio" name="p1" value="B" class="mr-2" />
+                                            <span class="inline-flex items-center gap-2 text-yellow-500 font-semibold">
+                                                <span class="pacman text-xl">👾</span> B) Normal
+                                            </span>
+                                        </label>
+                                        <label class="block">
+                                            <input type="radio" name="p1" value="C" class="mr-2" />
+                                            <span class="inline-flex items-center gap-2 text-red-600 font-semibold">
+                                                <span class="pacman text-xl">👾</span> C) Muy malo
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="pregunta hidden">
+                                    <p class="font-bold mb-2 flex items-center gap-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-500"
+                                            fill="currentColor" viewBox="0 0 20 20">
+                                            <path
+                                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.562 4.808h5.058c.969 0 1.371 1.24.588 1.81l-4.1 2.988 1.563 4.808c.3.921-.755 1.688-1.538 1.117L10 15.347l-4.083 2.11c-.783.571-1.838-.196-1.538-1.117l1.563-4.808-4.1-2.988c-.783-.57-.38-1.81.588-1.81h5.058l1.561-4.808z" />
+                                        </svg>
+                                        8. ¿El sistema respondio bien al usarlo?
+                                    </p>
+                                    <div class="space-y-2 ml-6">
+                                        <label class="block">
+                                            <input type="radio" name="p1" value="A" class="mr-2" />
+                                            <span class="inline-flex items-center gap-2 text-green-600 font-semibold">
+                                                <span class="pacman text-xl">👾</span> A) Muy bueno
+                                            </span>
+                                        </label>
+                                        <label class="block">
+                                            <input type="radio" name="p1" value="B" class="mr-2" />
+                                            <span class="inline-flex items-center gap-2 text-yellow-500 font-semibold">
+                                                <span class="pacman text-xl">👾</span> B) Normal
+                                            </span>
+                                        </label>
+                                        <label class="block">
+                                            <input type="radio" name="p1" value="C" class="mr-2" />
+                                            <span class="inline-flex items-center gap-2 text-red-600 font-semibold">
+                                                <span class="pacman text-xl">👾</span> C) Muy malo
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="pregunta hidden">
+                                    <p class="font-bold mb-2 flex items-center gap-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-500"
+                                            fill="currentColor" viewBox="0 0 20 20">
+                                            <path
+                                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.562 4.808h5.058c.969 0 1.371 1.24.588 1.81l-4.1 2.988 1.563 4.808c.3.921-.755 1.688-1.538 1.117L10 15.347l-4.083 2.11c-.783.571-1.838-.196-1.538-1.117l1.563-4.808-4.1-2.988c-.783-.57-.38-1.81.588-1.81h5.058l1.561-4.808z" />
+                                        </svg>
+                                        9. ¿Te gustaron los graficos y el sonido?
+                                    </p>
+                                    <div class="space-y-2 ml-6">
+                                        <label class="block">
+                                            <input type="radio" name="p1" value="A" class="mr-2" />
+                                            <span class="inline-flex items-center gap-2 text-green-600 font-semibold">
+                                                <span class="pacman text-xl">👾</span> A) Muy bueno
+                                            </span>
+                                        </label>
+                                        <label class="block">
+                                            <input type="radio" name="p1" value="B" class="mr-2" />
+                                            <span class="inline-flex items-center gap-2 text-yellow-500 font-semibold">
+                                                <span class="pacman text-xl">👾</span> B) Normal
+                                            </span>
+                                        </label>
+                                        <label class="block">
+                                            <input type="radio" name="p1" value="C" class="mr-2" />
+                                            <span class="inline-flex items-center gap-2 text-red-600 font-semibold">
+                                                <span class="pacman text-xl">👾</span> C) Muy malo
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="pregunta hidden">
+                                    <p class="font-bold mb-2 flex items-center gap-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-500"
+                                            fill="currentColor" viewBox="0 0 20 20">
+                                            <path
+                                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.562 4.808h5.058c.969 0 1.371 1.24.588 1.81l-4.1 2.988 1.563 4.808c.3.921-.755 1.688-1.538 1.117L10 15.347l-4.083 2.11c-.783.571-1.838-.196-1.538-1.117l1.563-4.808-4.1-2.988c-.783-.57-.38-1.81.588-1.81h5.058l1.561-4.808z" />
+                                        </svg>
+                                        10. ¿Consideras util este tipo de actividad?
+                                    </p>
+                                    <div class="space-y-2 ml-6">
+                                        <label class="block">
+                                            <input type="radio" name="p1" value="A" class="mr-2" />
+                                            <span class="inline-flex items-center gap-2 text-green-600 font-semibold">
+                                                <span class="pacman text-xl">👾</span> A) Muy bueno
+                                            </span>
+                                        </label>
+                                        <label class="block">
+                                            <input type="radio" name="p1" value="B" class="mr-2" />
+                                            <span class="inline-flex items-center gap-2 text-yellow-500 font-semibold">
+                                                <span class="pacman text-xl">👾</span> B) Normal
+                                            </span>
+                                        </label>
+                                        <label class="block">
+                                            <input type="radio" name="p1" value="C" class="mr-2" />
+                                            <span class="inline-flex items-center gap-2 text-red-600 font-semibold">
+                                                <span class="pacman text-xl">👾</span> C) Muy malo
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!-- Opinión final -->
+                                <div class="pregunta hidden">
+                                    <p class="font-bold mb-2">11. ¿Deseas dejar una opinión adicional?</p>
+                                    <textarea name="opinion" rows="4"
+                                        class="w-full p-3 border border-gray-300 rounded-md text-black"
+                                        placeholder="Escribe aquí tu opinión..."></textarea>
+                                </div>
+
+                            </div>
+
+                            <!-- Overlay de envío -->
+                            <div id="overlayEnvio"
+                                class="fixed inset-0 bg-white bg-opacity-90 flex items-center justify-center z-50 hidden">
+                                <div class="text-center">
+                                    <!-- Loader giratorio -->
+                                    <div id="cargandoAnimacion"
+                                        class="animate-spin rounded-full border-4 border-blue-500 border-t-transparent h-16 w-16 mx-auto mb-4">
+                                    </div>
+                                    <!-- Check de éxito -->
+                                    <div id="checkExito" class="hidden flex flex-col items-center">
+                                        <svg class="w-16 h-16 text-green-500 mb-2" fill="none" stroke="currentColor"
+                                            stroke-width="2" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <p class="text-green-700 font-bold text-xl">¡Opinión enviada correctamente!</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Navegación -->
+                            <div class="flex justify-between mt-6">
+                                <button type="button" onclick="anteriorPregunta()"
+                                    class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">
+                                    Anterior
+                                </button>
+                                <button type="button" onclick="siguientePregunta()"
+                                    class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                                    Siguiente
+                                </button>
+                            </div>
+                            <!-- Botón Enviar -->
+                            <div id="botonEnviar" class="text-center mt-6 hidden">
+                                <button type="button" onclick="enviarCuestionario()"
+                                    class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg">
+                                    Enviar respuestas
+                                </button>
+
+                            </div>
+
+                        </form>
+                    </div>
+
+                    <script>
+                        let preguntaActual = 0;
+                        const preguntas = document.querySelectorAll('.pregunta');
+
+                        function mostrarPregunta(index) {
+                            preguntas.forEach((p, i) => {
+                                p.style.display = i === index ? 'block' : 'none';
+                            });
+
+                            document.getElementById('botonEnviar').classList.toggle('hidden', index !== preguntas.length - 1);
+                        }
+
+                        function siguientePregunta() {
+                            if (preguntaActual < preguntas.length - 1) {
+                                preguntaActual++;
+                                mostrarPregunta(preguntaActual);
+                            }
+                        }
+
+                        function anteriorPregunta() {
+                            if (preguntaActual > 0) {
+                                preguntaActual--;
+                                mostrarPregunta(preguntaActual);
+                            }
+                        }
+
+                        function enviarCuestionario() {
+                            const overlay = document.getElementById('overlayEnvio');
+                            const loader = document.getElementById('cargandoAnimacion');
+                            const check = document.getElementById('checkExito');
+                            const form = document.getElementById('formularioCuestionario');
+
+                            // Mostrar animación de carga
+                            overlay.classList.remove('hidden');
+                            loader.classList.remove('hidden');
+                            check.classList.add('hidden');
+
+                            // Simular envío
+                            setTimeout(() => {
+                                loader.classList.add('hidden');
+                                check.classList.remove('hidden');
+
+                                // Esperar 2 segundos más y reiniciar
+                                setTimeout(() => {
+                                    overlay.classList.add('hidden');
+                                    form.reset(); // Reinicia el formulario
+                                    preguntaActual = 0; // Volver a la primera pregunta
+                                    mostrarPregunta(preguntaActual);
+                                }, 2000);
+                            }, 2000); // Tiempo de animación inicial
+                        }
+
+                    </script>
+                </section>
+
+
+
+
+
+                <script>
+                    function mostrarSeccion(id) {
+                        const secciones = document.querySelectorAll('.seccion');
+                        secciones.forEach(s => s.classList.add('hidden'));
+                        document.getElementById(id).classList.remove('hidden');
+
+                        const ids = ['informacion', 'seguridad', 'perfil', 'privacidad', 'familia', 'reporte'];
+                        ids.forEach(i => {
+                            const item = document.getElementById('item-' + i);
+                            if (item) item.classList.remove('text-blue-600');
+                        });
+
+                        const activo = document.getElementById('item-' + id);
+                        if (activo) activo.classList.add('text-blue-600');
+                    }
+
+
+
+                    document.addEventListener('DOMContentLoaded', function () {
+                        // Cargar datos guardados
+                        const perfil = JSON.parse(localStorage.getItem('perfilUsuario') || '{}');
+                        if (perfil.nombre) document.getElementById('nombreUsuario').value = perfil.nombre;
+                        if (perfil.bio) document.getElementById('bio').value = perfil.bio;
+                    });
+
+                    // Guardar nombre de usuario
+                    document.getElementById('nombreUsuario').nextElementSibling.addEventListener('click', function () {
+                        const nombre = document.getElementById('nombreUsuario').value.trim();
+                        const perfil = JSON.parse(localStorage.getItem('perfilUsuario') || '{}');
+                        perfil.nombre = nombre;
+                        localStorage.setItem('perfilUsuario', JSON.stringify(perfil));
+                        alert('Nombre de usuario guardado correctamente.');
+                    });
+
+                    // Guardar biografía
+                    document.getElementById('bio').nextElementSibling.addEventListener('click', function () {
+                        const bio = document.getElementById('bio').value.trim();
+                        const perfil = JSON.parse(localStorage.getItem('perfilUsuario') || '{}');
+                        perfil.bio = bio;
+                        localStorage.setItem('perfilUsuario', JSON.stringify(perfil));
+                        alert('Biografía actualizada correctamente.');
+                    });
+
+
+                </script>
+                <script>
+                    const formFamilia = document.getElementById('formAgregarMiembro');
+                    const lista = document.getElementById('listaMiembros');
+
+
+                    // Cargar miembros guardados al iniciar
+                    let filtroMiembro = '';
+
+                    document.getElementById('busquedaMiembro').addEventListener('input', function (e) {
+                        filtroMiembro = e.target.value.toLowerCase();
+                        cargarMiembros();
+                    });
+
+                    function cargarMiembros() {
+                        lista.innerHTML = '';
+                        const miembros = JSON.parse(localStorage.getItem('miembrosFamilia') || '[]');
+                        miembros
+                            .filter(miembro =>
+                                miembro.correo.toLowerCase().includes(filtroMiembro) ||
+                                miembro.rol.toLowerCase().includes(filtroMiembro)
+                            )
+                            .forEach((miembro, idx) => {
+                                const li = document.createElement('li');
+                                li.className = "flex justify-between items-center bg-gray-700 text-white p-4 rounded";
+                                li.innerHTML = `
+        <div>
+          <p class="font-semibold">${miembro.correo}</p>
+          <p class="text-sm text-gray-300" id="rolTexto${idx}">${miembro.rol}</p>
+        </div>
+        <div class="flex gap-2">
+          <button onclick="editarMiembro(${idx})" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded">Editar</button>
+          <button onclick="eliminarMiembro(${idx})" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded">Eliminar</button>
+        </div>
+        <div id="editarRol${idx}" class="hidden mt-2">
+          <select id="nuevoRol${idx}" class="bg-gray-700 text-white px-2 py-1 rounded">
+            <option value="Escudero">Escudero</option>
+            <option value="Armero">Armero</option>
+            <option value="Ayudante de caballeria">Ayudante de caballeria</option>
+            <option value="paje">paje</option>
+          </select>
+          <button onclick="guardarRol(${idx})" class="bg-green-600 hover:bg-green-700 text-white px-2 py-1 rounded ml-2">Guardar</button>
+          <button onclick="cancelarEdicion(${idx})" class="bg-gray-500 hover:bg-gray-600 text-white px-2 py-1 rounded ml-2">Cancelar</button>
+        </div>
+      `;
+                                lista.appendChild(li);
+                            });
+                    }
+
+                    // Mostrar el formulario de edición
+                    window.editarMiembro = function (idx) {
+                        document.getElementById(`editarRol${idx}`).classList.remove('hidden');
+                        // Oculta los botones Editar y Eliminar
+                        const botones = document.querySelectorAll(`#listaMiembros > li:nth-child(${idx + 1}) .flex.gap-2 button`);
+                        botones.forEach(btn => btn.classList.add('hidden'));
+                    };
+
+                    // Guardar el nuevo rol
+                    window.guardarRol = function (idx) {
+                        const miembros = JSON.parse(localStorage.getItem('miembrosFamilia') || '[]');
+                        const nuevoRol = document.getElementById(`nuevoRol${idx}`).value;
+                        miembros[idx].rol = nuevoRol;
+                        guardarMiembros(miembros);
+                        cargarMiembros();
+                    };
+
+                    // Cancelar edición
+                    window.cancelarEdicion = function (idx) {
+                        document.getElementById(`editarRol${idx}`).classList.add('hidden');
+                        // Muestra los botones Editar y Eliminar
+                        const botones = document.querySelectorAll(`#listaMiembros > li:nth-child(${idx + 1}) .flex.gap-2 button`);
+                        botones.forEach(btn => btn.classList.remove('hidden'));
+                    };
+
+                    // Guardar miembros en localStorage
+                    function guardarMiembros(miembros) {
+                        localStorage.setItem('miembrosFamilia', JSON.stringify(miembros));
+                    }
+
+                    // Eliminar miembro por índice
+                    window.eliminarMiembro = function (idx) {
+                        if (confirm('¿Seguro que deseas eliminar este miembro?')) {
+                            const miembros = JSON.parse(localStorage.getItem('miembrosFamilia') || '[]');
+                            miembros.splice(idx, 1);
+                            guardarMiembros(miembros);
+                            cargarMiembros();
+                        }
+                    };
+
+                    // Agregar miembro
+                    formFamilia.addEventListener('submit', function (e) {
+                        e.preventDefault();
+                        const correo = document.getElementById('correoMiembro').value.trim();
+                        const rol = document.getElementById('rolMiembro').value;
+                        if (correo && rol) {
+                            const miembros = JSON.parse(localStorage.getItem('miembrosFamilia') || '[]');
+                            // Validar duplicados
+                            if (miembros.some(m => m.correo === correo)) {
+                                alert('Este correo ya está registrado.');
+                                return;
+                            }
+                            miembros.push({ correo, rol });
+                            guardarMiembros(miembros);
+                            cargarMiembros();
+                            formFamilia.reset();
+                        }
+                    });
+
+                    // Inicializar lista al cargar la página
+                    document.addEventListener('DOMContentLoaded', cargarMiembros);
+                </script>
+
+
+
+
+                <script>
+                    function exportarDatosExcel() {
+                        const miembros = JSON.parse(localStorage.getItem('miembrosFamilia') || '[]');
+                        let csv = 'Correo, Rol\n';
+                        miembros.forEach(m => {
+                            csv += `"${m.correo}","${m.rol}"\n`;
+                        });
+
+                        const blob = new Blob([csv], { type: 'text/csv' });
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = 'datos_familia.csv'; // Cambiado a .csv
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(url);
+                    }
+
+
+
+                    document.querySelector('#privacidad form').addEventListener('submit', function (e) {
+                        e.preventDefault();
+                        // Obtener la opción seleccionada
+                        const privacidad = document.querySelector('input[name="privacidad"]:checked').value;
+
+                        // Obtener el consentimiento de marketing
+                        const marketing = document.getElementById('consentimientoMarketing').checked;
+                        // Guardar en localStorage
+                        localStorage.setItem('configPrivacidad', JSON.stringify({
+                            privacidad,
+                            marketing
+                        }));
+                        alert('Configuración de privacidad guardada correctamente.');
+                    });
+
+
+                    document.addEventListener('DOMContentLoaded', function () {
+                        if (!localStorage.getItem('cookiesAceptadas')) {
+                            document.getElementById('avisoCookies').style.display = 'flex';
+                        }
+                    });
+
+                    function aceptarTodasCookies() {
+                        localStorage.setItem('cookiesAceptadas', JSON.stringify({
+                            necesarias: true,
+                            preferencias: true,
+                            estadisticas: true,
+                            marketing: true
+                        }));
+                        document.getElementById('avisoCookies').style.display = 'none';
+                    }
+
+                    function aceptarSeleccionCookies() {
+                        localStorage.setItem('cookiesAceptadas', JSON.stringify({
+                            necesarias: true,
+                            preferencias: document.getElementById('cookiePreferencias').checked,
+                            estadisticas: document.getElementById('cookieEstadisticas').checked,
+                            marketing: document.getElementById('cookieMarketing').checked
+                        }));
+                        document.getElementById('avisoCookies').style.display = 'none';
+                    }
+
+                    function aceptarSoloNecesarias() {
+                        localStorage.setItem('cookiesAceptadas', JSON.stringify({
+                            necesarias: true,
+                            preferencias: false,
+                            estadisticas: false,
+                            marketing: false
+                        }));
+                        document.getElementById('avisoCookies').style.display = 'none';
+                    }
+
+
+
+
+
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const config = JSON.parse(localStorage.getItem('configPrivacidad') || '{}');
+                        if (config.privacidad) {
+                            const radio = document.querySelector(`input[name="privacidad"][value="${config.privacidad}"]`);
+                            if (radio) radio.checked = true;
+                        }
+                        if (typeof config.marketing !== 'undefined') {
+                            document.getElementById('consentimientoMarketing').checked = config.marketing;
+                        }
+                    });
+                </script>
+
+    </body>
+
+</html>
+</php>

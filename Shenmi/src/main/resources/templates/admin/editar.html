@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Editar Usuario</title>
+  <link th:href="@{/css/login.css}" rel="stylesheet">
+  <link th:href="@{/css/navbar.css}" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      background: url('/img/fondo.jpg') no-repeat center/cover;
+      padding-top: 70px;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- NAVBAR -->
+  <header>
+    <nav class="navbar-principal">
+      <div class="mobile">
+        <div class="header">
+          <button id="bmenu"><i class="fa-solid fa-list"></i></button>
+          <a th:href="@{/}"><img th:src="@{/img/Shenmi Kappai.png}" width="60" /></a>
+          <div>
+            <a th:href="@{/login}"><i class="fa-solid fa-user"></i></a>
+            <a href="#"><i class="fa-solid fa-cart-shopping"></i></a>
+          </div>
+        </div>
+        <div class="links" id="links">
+          <a href="#">Juegos</a>
+          <a href="#">Soporte</a>
+        </div>
+      </div>
+      <ul>
+        <li><a th:href="@{/}"><img th:src="@{/img/Shenmy Kappai.png}" width="60"></a></li>
+        <li><a href="#" class="link link-hide">Juegos</a></li>
+        <li><a href="#" class="link link-hide">Soporte técnico</a></li>
+        <li class="more">
+          <a href="#" class="link" id="bmore">Menú</a>
+          <div class="menu" id="menu">
+            <a href="#">Soporte técnico</a>
+          </div>
+        </li>
+      </ul>
+      <ul>
+        <li><a th:href="@{/admin/lista}" class="btn">Volver a Lista</a></li>
+        <li><a th:href="@{/perfil/salir}" class="btn">Cerrar sesión</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- CONTENIDO -->
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        
+        <!-- Encabezado -->
+        <div class="text-center bg-dark bg-opacity-75 p-4 rounded mb-4 text-white">
+          <h1>Editar Usuario</h1>
+          <p>Modifique los datos del usuario seleccionado.</p>
+        </div>
+
+        <!-- Formulario -->
+        <div class="bg-dark bg-opacity-75 p-4 rounded">
+          <form th:action="@{/admin/editar/{id}(id=${usuario.idUsuario})}" 
+                th:object="${usuario}" method="post">
+            
+            <div class="mb-3">
+              <label class="form-label text-white">ID Usuario</label>
+              <input type="text" class="form-control" th:value="${usuario.idUsuario}" readonly>
+            </div>
+
+            <div class="mb-3">
+              <label for="nombreUsuario" class="form-label text-white">Nombre *</label>
+              <input type="text" class="form-control" id="nombreUsuario" 
+                     th:field="*{nombreUsuario}" required>
+            </div>
+
+            <div class="mb-3">
+              <label for="apellidoUsuario" class="form-label text-white">Apellido *</label>
+              <input type="text" class="form-control" id="apellidoUsuario" 
+                     th:field="*{apellidoUsuario}" required>
+            </div>
+
+            <div class="mb-3">
+              <label for="correoUsuario" class="form-label text-white">Correo Electrónico *</label>
+              <input type="email" class="form-control" id="correoUsuario" 
+                     th:field="*{correoUsuario}" required>
+            </div>
+
+            <div class="mb-3">
+              <label for="telUsuario" class="form-label text-white">Teléfono</label>
+              <input type="tel" class="form-control" id="telUsuario" 
+                     th:field="*{telUsuario}">
+            </div>
+
+            <div class="mb-3">
+              <label for="rolIdRol" class="form-label text-white">Tipo de Usuario *</label>
+              <select class="form-control" id="rolIdRol" th:field="*{rolIdRol}" required>
+                <option value="2">Usuario Regular</option>
+                <option value="1">Administrador</option>
+              </select>
+            </div>
+
+            <div class="text-center">
+              <button type="submit" class="btn btn-success btn-lg me-2">
+                <i class="fa-solid fa-save"></i> Actualizar Usuario
+              </button>
+              <a th:href="@{/admin/lista}" class="btn btn-secondary btn-lg">
+                <i class="fa-solid fa-times"></i> Cancelar
+              </a>
+            </div>
+
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <!-- JS menú móvil -->
+  <script>
+    document.getElementById('bmenu')?.addEventListener('click', () => {
+      document.getElementById('links').classList.toggle('show');
+    });
+    document.getElementById('bmore')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      document.getElementById('menu').classList.toggle('show');
+    });
+  </script>
+
+</body>
+</html>
