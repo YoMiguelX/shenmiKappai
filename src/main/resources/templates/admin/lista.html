@@ -19,6 +19,17 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
   <style>
+    /* FIX: Asegurar que el fondo cubra toda la página */
+    html {
+      min-height: 100%;
+    }
+    
+    body {
+      background: url('/SRC.2/IMG/fondo.jpg') no-repeat center top/cover fixed;
+      min-height: 100vh;
+      padding-top: 70px;
+    }
+
     /* Estilos para los filtros */
     .filtros-container {
       background: rgba(40, 40, 40, 0.9);
@@ -93,7 +104,7 @@
   </style>
 </head>
 
-<body style="background: url('/SRC.2/IMG/fondo.jpg') no-repeat center/cover; padding-top: 70px">
+<body>
 
   <!-- NAVBAR -->
   <header>
@@ -127,6 +138,7 @@
         <li><a th:href="@{/logout}" class="btn">Cerrar sesión</a></li>
         <li><a th:href="@{/admin/crear}" class="btn">Registrar Admin</a></li>
         <li><a th:href="@{/jugador}" class="btn">Ver estado del jugador</a></li>
+        <li><a th:href="@{/admin/cambiar-password}" class="btn">Cambiar Contraseña</a></li>
         <li>
           <a th:href="@{/admin/exportarExcel}" class="btn btn-futurista">Exportar Datos</a>
         </li>
@@ -261,7 +273,7 @@
     </div>
 
     <!-- Paginación -->
-    <div class="d-flex justify-content-between align-items-center">
+    <div class="d-flex justify-content-between align-items-center mb-5 pb-4">
       <div class="page-info" id="paginaInfo">
         Página <span id="paginaActual">1</span> de <span id="totalPaginas">1</span>
       </div>
@@ -501,17 +513,6 @@
       e.preventDefault();
       document.getElementById('menu').classList.toggle('show');
     });  
-    
-    // Remover el script que redirige al login en el botón atrás
-    // Este script estaba causando conflictos con la paginación
-    /*
-    (function(){
-    history.pushState(null, '', location.href);
-    window.addEventListener('popstate', function () {
-      window.location.replace('/login');
-    });
-  })();
-  */
   </script>
 
 </body>
